@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SkillSync | Internal Talent Marketplace</title>
+<style>
+:root{--navy:#076a6f;--blue:#076a6f;--sky:#eafaf4;--ink:#072224;--muted:#4e6c6e;--line:#d6eee4;--bg:#f3faf6;--green:#07806a;--amber:#b77900;--red:#c23940;--mint:#9df4c7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--ink)}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;font-weight:650;background:var(--blue);color:#fff}button.secondary{background:#eef2ff;color:var(--navy);border:1px solid #dce4ff}button.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}button.danger{background:#fff0f0;color:var(--red);border:1px solid #ffdada}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d9e0eb;border-radius:10px;background:#fff;color:var(--ink);outline:none}input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #3563e91c}label{font-size:13px;font-weight:650;color:#475467;display:block;margin:12px 0 6px}
+.login-wrap{min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;background:#fff}.login-hero{padding:7vw;display:flex;flex-direction:column;justify-content:center;background:radial-gradient(circle at 15% 15%,#dbeafe,transparent 38%),linear-gradient(135deg,#eff6ff,#f7f8ff 65%,#e9eaff)}.brand{font-weight:850;letter-spacing:-.7px;font-size:24px;color:var(--navy)}.brand span{color:var(--blue)}.hero-title{font-size:clamp(34px,4vw,58px);line-height:1.05;letter-spacing:-2px;margin:30px 0 18px;color:#111b3c}.hero-copy{font-size:17px;line-height:1.7;color:#52617c;max-width:520px}.hero-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}.pill{background:#ffffffc9;border:1px solid #dbe5f5;border-radius:99px;padding:8px 12px;font-size:12px;color:#34466b;font-weight:650}.login-panel{display:flex;align-items:center;justify-content:center;padding:28px}.login-card{width:min(420px,100%)}.login-card h2{font-size:28px;margin:0 0 8px}.muted{color:var(--muted)}.small{font-size:12px}.demo-box{margin-top:20px;padding:14px;background:#f5f7ff;border:1px solid #e0e7ff;border-radius:12px;font-size:12px;line-height:1.7}.demo-box strong{color:var(--navy)}.error{color:var(--red);font-size:13px;margin-top:10px;min-height:18px}
+.app{display:none;min-height:100vh}.sidebar{width:248px;background:#fff;border-right:1px solid var(--line);padding:24px 16px;position:fixed;inset:0 auto 0 0;display:flex;flex-direction:column;z-index:3}.sidebar .brand{padding:0 12px 28px}.nav-label{font-size:10px;font-weight:800;letter-spacing:1.2px;color:#98a2b3;padding:12px}.nav{display:flex;align-items:center;gap:12px;text-align:left;width:100%;background:transparent;color:#596579;margin:3px 0;padding:12px;border-radius:10px;font-weight:650}.nav.active,.nav:hover{background:#edf2ff;color:var(--blue)}.nav .ico{width:22px;text-align:center}.side-bottom{margin-top:auto;border-top:1px solid var(--line);padding-top:16px}.user-mini{padding:12px;display:flex;gap:10px;align-items:center}.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#dfe8ff;color:#294bb3;font-weight:800;flex-shrink:0}.user-mini strong{display:block;font-size:13px}.user-mini small{color:var(--muted)}
+.main{margin-left:248px}.topbar{height:76px;background:#ffffffd9;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px;position:sticky;top:0;z-index:2;backdrop-filter:blur(10px)}.crumb{font-size:13px;color:var(--muted)}.top-right{display:flex;align-items:center;gap:12px}.role-tag{font-size:12px;background:#eef2ff;color:var(--navy);padding:7px 10px;border-radius:99px;font-weight:700}.content{padding:30px 34px;max-width:1500px;margin:auto}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:24px}.page-head h1{font-size:28px;letter-spacing:-.7px;margin:0 0 7px}.page-head p{margin:0;color:var(--muted);font-size:14px}.grid{display:grid;gap:18px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:22px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 3px 14px #18254b05}.stat-label{font-size:13px;color:var(--muted);font-weight:600}.stat-value{font-size:30px;font-weight:800;letter-spacing:-1px;margin:10px 0 4px}.stat-note{font-size:12px;color:var(--green)}.two-col{grid-template-columns:1.35fr 1fr}.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.section-title h3{font-size:16px;margin:0}.section-title span{font-size:12px;color:var(--muted)}.project-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.project-card{border:1px solid var(--line);border-radius:14px;padding:17px;display:flex;flex-direction:column;gap:12px;background:#fff}.project-top{display:flex;justify-content:space-between;gap:10px}.project-card h3{font-size:16px;margin:0}.project-card p{font-size:13px;color:var(--muted);line-height:1.55;margin:0}.tag-row{display:flex;gap:6px;flex-wrap:wrap}.tag{background:#f0f4ff;color:#3b559b;border-radius:7px;padding:5px 8px;font-size:11px;font-weight:650}.status{font-size:11px;font-weight:750;padding:5px 8px;border-radius:99px;background:#e9f8f0;color:var(--green);white-space:nowrap}.status.partial{background:#fff4dd;color:var(--amber)}.status.critical{background:#fff0f0;color:var(--red)}.card-actions{display:flex;gap:8px;margin-top:auto}.card-actions button{font-size:12px;padding:9px 11px}.match-row{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #f0f2f6}.match-row:last-child{border:0}.match-score{margin-left:auto;font-weight:800;color:var(--blue);font-size:14px}.progress{height:7px;border-radius:99px;background:#edf0f6;overflow:hidden;margin-top:7px}.progress span{display:block;height:100%;background:linear-gradient(90deg,#4777f5,#6b9bff);border-radius:99px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}.toolbar input{max-width:320px}.toolbar select{max-width:190px}.two-col-even{grid-template-columns:1fr 1fr}.feature-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.feature-card h3{margin:10px 0 7px;font-size:15px}.feature-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}.feature-icon{width:40px;height:40px;border-radius:12px;background:#edf2ff;display:grid;place-items:center;font-size:20px}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:13px 12px;border-bottom:1px solid #edf0f5;white-space:nowrap}th{color:#667085;font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:#fafbfe}.match-detail{display:grid;grid-template-columns:1fr 1fr;gap:16px}.check{color:var(--green);font-weight:750}.miss{color:var(--amber);font-weight:750}.notice{padding:13px 15px;border-radius:12px;background:#f2f6ff;border:1px solid #dfe8ff;font-size:13px;line-height:1.6;color:#405174;margin-bottom:18px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.empty{padding:36px;text-align:center;color:var(--muted)}.toast{position:fixed;right:24px;bottom:24px;background:#172554;color:#fff;padding:13px 18px;border-radius:12px;box-shadow:0 8px 30px #0002;z-index:10;font-size:13px;display:none}.footer-note{font-size:11px;color:#98a2b3;margin-top:18px}
+@media(max-width:1050px){.sidebar{width:215px}.main{margin-left:215px}.stats{grid-template-columns:repeat(2,1fr)}.two-col,.two-col-even{grid-template-columns:1fr}.project-list{grid-template-columns:1fr 1fr}.content{padding:24px}}
+@media(max-width:720px){.login-wrap{grid-template-columns:1fr}.login-hero{padding:34px 25px}.login-hero .hero-title{margin:22px 0 12px}.hero-copy{font-size:14px}.login-panel{padding:32px 24px}.sidebar{position:static;width:100%;height:auto;padding:12px;display:block;border-right:0;border-bottom:1px solid var(--line)}.sidebar .brand{padding:8px 10px 12px}.nav-label,.side-bottom{display:none}.navs{display:flex;overflow:auto;gap:5px}.nav{width:auto;white-space:nowrap;padding:9px 11px;font-size:12px}.nav .ico{display:none}.main{margin-left:0}.topbar{height:60px;padding:0 18px}.content{padding:22px 16px}.stats{grid-template-columns:1fr 1fr;gap:10px}.card{padding:15px}.stat-value{font-size:24px}.project-list,.feature-grid,.match-detail{grid-template-columns:1fr}.page-head{flex-direction:column}.page-head h1{font-size:24px}.top-right .role-tag{display:none}.toolbar input,.toolbar select{max-width:none;flex:1;min-width:130px}}
+</style>
+</head>
+<body>
+<div id="login" class="login-wrap">
+  <section class="login-hero">
+    <div class="brand">Skill<span>Sync</span></div>
+    <div class="hero-title">Discover talent.<br><span style="color:#3563e9">Build better teams.</span></div>
+    <p class="hero-copy">An AI-powered internal talent marketplace that connects employee skills, interests, and experience with the projects where they can make an impact.</p>
+    <div class="hero-pills"><span class="pill">✦ AI Skill Matching</span><span class="pill">↗ Hidden Talent</span><span class="pill">◎ Skill Gap Insights</span></div>
+  </section>
+  <section class="login-panel">
+    <form class="login-card" id="loginForm">
+      <h2>Welcome back</h2><p class="muted" style="margin:0 0 24px">Sign in to your SkillSync workspace.</p>
+      <label for="employeeId">Employee ID</label><input id="employeeId" placeholder="e.g. EMP-1001" autocomplete="username" required />
+      <label for="password">Password</label><div style="position:relative"><input id="password" type="password" placeholder="Enter demo password" autocomplete="current-password" required /><button type="button" class="ghost" id="togglePass" style="position:absolute;right:5px;top:5px;padding:6px 9px;font-size:11px">Show</button></div>
+      <label for="role">Login as</label><select id="role"><option>Employee</option><option>Project Manager</option><option>HR/Admin</option></select>
+      <button type="submit" style="width:100%;margin-top:22px;padding:13px">Sign in →</button><div class="error" id="loginError"></div>
+      <div class="demo-box"><strong>Demo access</strong><br>Employee ID: <b>EMP-1001</b><br>Password: <b>demo123</b><br><span class="muted">Use the same demo credentials for any role.</span></div>
+      <p class="small muted" style="margin-top:18px" id="modeNote">Checking backend connection...</p>
+    </form>
+  </section>
+</div>
+<div class="app" id="app">
+  <aside class="sidebar">
+    <div class="brand">Skill<span>Sync</span></div>
+    <div class="nav-label">WORKSPACE</div><div class="navs" id="navs">
+      <button class="nav active" data-page="dashboard"><span class="ico">▦</span>Overview</button>
+      <button class="nav" data-page="marketplace"><span class="ico">⌕</span>Project Marketplace</button>
+      <button class="nav" data-page="matching"><span class="ico">✧</span>AI Skill Matching</button>
+      <button class="nav" data-page="talent"><span class="ico">◉</span>Hidden Talent</button>
+      <button class="nav" data-page="upskilling"><span class="ico">↗</span>Skill Gaps</button>
+      <button class="nav" data-page="admin"><span class="ico">⚙</span>HR & Projects</button>
+    </div>
+    <div class="side-bottom"><div class="user-mini"><div class="avatar" id="avatar">SJ</div><div><strong id="sideName">Sarah Johnson</strong><small id="sideRole">Employee</small></div></div><button class="ghost" id="logout" style="width:100%">↪ Log out</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><div class="crumb">TechByte / <strong id="crumb">Overview</strong></div></div><div class="top-right"><span class="status" id="backendBadge" style="background:#eaf1ff;color:#294bb3">⚡ FastAPI Backend Active</span><span class="role-tag" id="roleTag">Employee</span><span class="avatar" id="topAvatar">SJ</span></div></header>
+    <div class="content" id="content"></div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const API_BASE = window.location.origin.includes("8000") ? "/api" : "http://localhost:8000/api";
+let useBackend = false;
+let authToken = localStorage.getItem("ss_token") || null;
+
+const initialProjects=[
+{id:1,title:"AI Customer Analytics Platform",dept:"Data & AI",desc:"Build a platform that turns customer data into actionable insights using machine learning.",skills:["Python","Machine Learning","SQL","Cloud"],status:"Open",owner:"Priya Mehta"},
+{id:2,title:"Smart HR Insights Dashboard",dept:"Human Resources",desc:"Create analytics dashboards for workforce trends, skills, and internal mobility.",skills:["React","Data Analytics","SQL","Communication"],status:"Open",owner:"Arjun Rao"},
+{id:3,title:"Internal Knowledge Assistant",dept:"Engineering",desc:"Build a searchable assistant for company documents and team knowledge.",skills:["Python","NLP","APIs","RAG"],status:"Open",owner:"Neha Kapoor"},
+{id:4,title:"Cloud Migration Initiative",dept:"Platform",desc:"Support migration planning, cloud deployment, and reliability improvements.",skills:["AWS","Docker","DevOps","Networking"],status:"Open",owner:"Kabir Singh"},
+{id:5,title:"Employee Experience Portal",dept:"People Ops",desc:"Improve employee self-service with a responsive internal web portal.",skills:["React","JavaScript","UI/UX","REST APIs"],status:"Open",owner:"Aditi Shah"}
+];
+const initialEmployees=[
+{id:"EMP-1001",name:"Sarah Johnson",role:"Frontend Developer",dept:"Engineering",experience:2,skills:["React","JavaScript","Python","NLP"],interests:["AI/ML","Data Analytics"],knowledge:82,communication:78,recommendation:75,training:["React Advanced"],hidden:["Python","NLP"],learning:{}},
+{id:"EMP-1002",name:"Rohan Verma",role:"Backend Developer",dept:"Engineering",experience:4,skills:["Python","SQL","APIs","Docker","AWS"],interests:["Cloud","AI/ML"],knowledge:90,communication:72,recommendation:85,training:["AWS Fundamentals"],hidden:["AWS","Docker"],learning:{}},
+{id:"EMP-1003",name:"Aisha Khan",role:"Data Analyst",dept:"Data & AI",experience:3,skills:["SQL","Data Analytics","Python","Statistics"],interests:["AI/ML","Analytics"],knowledge:88,communication:91,recommendation:80,training:["Machine Learning Basics"],hidden:["Python"],learning:{}},
+{id:"EMP-1004",name:"Dev Patel",role:"UI/UX Designer",dept:"Design",experience:2,skills:["UI/UX","Figma","Research","Communication"],interests:["Product","Frontend"],knowledge:76,communication:93,recommendation:82,training:["Design Systems"],hidden:[],learning:{}},
+{id:"EMP-1005",name:"Meera Iyer",role:"Software Engineer",dept:"Platform",experience:5,skills:["JavaScript","React","APIs","Docker","AWS"],interests:["Cloud","Product"],knowledge:86,communication:80,recommendation:88,training:["Cloud Practitioner"],hidden:["AWS","Docker"],learning:{}}
+];
+
+let projects=JSON.parse(localStorage.getItem("ss_projects")||"null")||initialProjects;
+let employees=JSON.parse(localStorage.getItem("ss_employees")||"null")||initialEmployees;
+let applications=JSON.parse(localStorage.getItem("ss_apps")||"{}");
+let currentUser=null,currentPage="dashboard",selectedProject=1;
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function save(){localStorage.setItem("ss_projects",JSON.stringify(projects));localStorage.setItem("ss_employees",JSON.stringify(employees));localStorage.setItem("ss_apps",JSON.stringify(applications))}
+function toast(msg){$("toast").textContent=msg;$("toast").style.display="block";setTimeout(()=>$("toast").style.display="none",2600)}
+function person(){return employees.find(e=>e.id===(currentUser?.id))||employees[0]}
+function isManager(){return currentUser?.role!=="Employee"}
+function initials(name){return (name||"Sarah Johnson").split(" ").map(x=>x[0]).slice(0,2).join("").toUpperCase()}
+
+async function checkBackend(){
+  try{
+    let r = await fetch(API_BASE.replace("/api","/health"));
+    if(r.ok){
+      useBackend = true;
+      $("backendBadge").style.display="inline-block";
+      $("modeNote").innerHTML="⚡ <b>FastAPI Backend connected</b> · SQLite DB · TF-IDF AI Engine";
+      return true;
+    }
+  }catch(e){
+    useBackend = false;
+    $("backendBadge").style.display="none";
+    $("modeNote").textContent="Prototype mode · Sample data only";
+  }
+  return false;
+}
+
+function match(e,p){
+  let required=(p.skills||p.required_skills||[]).map(x=>x.toLowerCase());
+  let skills=(e.skills||[]).map(x=>x.toLowerCase());
+  let hits=required.filter(s=>skills.includes(s));
+  let interest=(e.interests||[]).some(i=>required.some(s=>s.includes(i.toLowerCase())||i.toLowerCase().includes(s))||(p.dept||p.department||"").toLowerCase().includes(i.toLowerCase()));
+  let skillScore=required.length?hits.length/required.length*60:0;
+  let expScore=Math.min((e.experience||e.experience_years||0)/5,1)*20;
+  let interestScore=interest?10:0;
+  let knowledge=(e.knowledge||e.knowledge_score||75)/100*10;
+  let score=Math.min(99,Math.round(skillScore+expScore+interestScore+knowledge));
+  return {score,hits,missing:required.filter(s=>!skills.includes(s)).map(s=>(p.skills||p.required_skills||[]).find(x=>x.toLowerCase()===s)),interest}
+}
+
+function projectCard(p){
+  let e=person(),m=match(e,p),applied=(applications[p.id]||[]).includes(e.id);
+  let pSkills = p.skills || p.required_skills || [];
+  let pDept = p.dept || p.department || "";
+  return `<article class="project-card"><div class="project-top"><div><h3>${esc(p.title)}</h3><div class="small muted" style="margin-top:5px">${esc(pDept)} · Lead: ${esc(p.owner)}</div></div><span class="status">${esc(p.status)}</span></div><p>${esc(p.description||p.desc)}</p><div class="tag-row">${pSkills.map(s=>`<span class="tag">${esc(s)}</span>`).join("")}</div><div style="display:flex;justify-content:space-between;align-items:center"><span class="small muted">Your match score</span><strong style="color:var(--blue)">${m.score}%</strong></div><div class="progress"><span style="width:${m.score}%"></span></div><div class="card-actions"><button onclick="viewProject(${p.id})" class="secondary">View match details</button><button onclick="applyProject(${p.id})" ${applied?"disabled":""} style="${applied?"background:#dff5e9;color:#16764e":""}">${applied?"Interest sent":"I'm interested"}</button></div></article>`
+}
+
+function pageHead(title,desc,action=""){return `<div class="page-head"><div><h1>${title}</h1><p>${desc}</p></div>${action}</div>`}
+
+async function fetchProjectsBackend(){
+  if(!useBackend) return;
+  try{
+    let res = await fetch(`${API_BASE}/projects`,{headers:{"Authorization":`Bearer ${authToken}`}});
+    if(res.ok){
+      let data = await res.json();
+      projects = data.map(p=>({...p, skills: p.required_skills, desc: p.description}));
+    }
+  }catch(e){}
+}
+
+async function render(){
+  document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.page===currentPage));
+  $("crumb").textContent=({dashboard:"Overview",marketplace:"Project Marketplace",matching:"AI Skill Matching",talent:"Hidden Talent",upskilling:"Skill Gaps",admin:"HR & Projects"})[currentPage];
+  const e=person();
+  let html="";
+
+  if(currentPage==="dashboard"){
+    let myApps=Object.values(applications).flat().filter(id=>id===e.id).length;
+    let hiddenCount = (e.hidden || e.hidden_skills || []).length;
+    html=pageHead(`Good morning, ${esc((e.name||"Sarah").split(" ")[0])} 👋`,"Here’s your talent snapshot and project opportunities.")+
+    `<div class="grid stats"><div class="card"><div class="stat-label">Skills in profile</div><div class="stat-value">${(e.skills||[]).length}</div><div class="stat-note">Profile ready to discover</div></div><div class="card"><div class="stat-label">Open projects</div><div class="stat-value">${projects.length}</div><div class="stat-note">Across teams</div></div><div class="card"><div class="stat-label">Interests submitted</div><div class="stat-value">${myApps}</div><div class="stat-note">Your internal mobility</div></div><div class="card"><div class="stat-label">Skills to explore</div><div class="stat-value">${hiddenCount+2}</div><div class="stat-note">Potential growth areas</div></div></div>
+    <div class="grid two-col"><section class="card"><div class="section-title"><h3>Recommended for you</h3><button class="ghost" onclick="go('marketplace')">View all →</button></div><div class="project-list">${projects.slice().sort((a,b)=>match(e,b).score-match(e,a).score).slice(0,2).map(projectCard).join("")}</div></section><section class="card"><div class="section-title"><h3>Your talent profile</h3><span>${useBackend?'FastAPI SQLite':'Demo profile'}</span></div><div style="display:flex;gap:13px;align-items:center;margin-bottom:18px"><div class="avatar" style="width:52px;height:52px">${initials(e.name)}</div><div><strong>${esc(e.name)}</strong><div class="small muted">${esc(e.job_title||e.role)} · ${e.experience||e.experience_years||0} years</div></div></div><div class="small muted" style="margin-bottom:8px">Skills</div><div class="tag-row">${(e.skills||[]).map(s=>`<span class="tag">${esc(s)}</span>`).join("")}</div><div class="small muted" style="margin:18px 0 8px">Interests</div><div class="tag-row">${(e.interests||[]).map(s=>`<span class="tag" style="background:#e9f8f0;color:#16764e">${esc(s)}</span>`).join("")}</div><div class="notice" style="margin:18px 0 0">💡 <b>Growth insight:</b> Explore projects that use ${esc((e.hidden||e.hidden_skills||[])[0]||"a new skill")} to make your additional capabilities visible.</div></section></div>
+    <div class="grid feature-grid" style="margin-top:18px"><div class="card feature-card"><div class="feature-icon">✧</div><h3>AI Skill Matching</h3><p>See how your profile aligns with project requirements.</p></div><div class="card feature-card"><div class="feature-icon">◉</div><h3>Hidden Talent</h3><p>Discover skills beyond your current job title.</p></div><div class="card feature-card"><div class="feature-icon">↗</div><h3>Upskilling</h3><p>Turn missing skills into a learning plan.</p></div></div>`;
+  }else if(currentPage==="marketplace"){
+    let depts = [...new Set(projects.map(p=>p.dept||p.department))];
+    html=pageHead("Project Marketplace","Explore internal opportunities and express interest.")+`<div class="toolbar"><input id="projectSearch" placeholder="Search projects or skills…" oninput="filterProjects()"><select id="deptFilter" onchange="filterProjects()"><option value="">All departments</option>${depts.map(d=>`<option>${esc(d)}</option>`).join("")}</select></div><div id="projectResults" class="project-list">${projects.map(projectCard).join("")}</div>`;
+  }else if(currentPage==="matching"){
+    let p=projects.find(x=>x.id===Number(selectedProject))||projects[0];
+    let ranked = [];
+    if(useBackend && authToken){
+      try{
+        let res = await fetch(`${API_BASE}/matching/shortlist`, {
+          method: "POST",
+          headers: {"Content-Type":"application/json", "Authorization": `Bearer ${authToken}`},
+          body: JSON.stringify({project_id: p.id, top_n: 10})
+        });
+        if(res.ok){
+          let data = await res.json();
+          ranked = data.map(item=>({
+            emp: item.employee,
+            m: {
+              score: item.match_score,
+              hits: item.explanation.hits,
+              missing: item.explanation.missing,
+              interest: item.explanation.interest_aligned
+            }
+          }));
+        }
+      }catch(err){}
+    }
+    if(!ranked.length){
+      ranked=employees.map(emp=>({emp,m:match(emp,p)})).sort((a,b)=>b.m.score-a.m.score);
+    }
+
+    html=pageHead("AI Skill Matching","Select a project to generate an explainable talent shortlist.")+`<div class="notice"><b>${useBackend?'FastAPI Hybrid Engine':'Prototype note'}:</b> Shortlist generated using TF-IDF vector text similarity, skill overlap, experience weighting, and performance scores.</div><div class="toolbar"><select id="matchProject" onchange="selectedProject=Number(this.value);render()">${projects.map(x=>`<option value="${x.id}" ${x.id===p.id?"selected":""}>${esc(x.title)}</option>`).join("")}</select><button onclick="toast('Shortlist refreshed')">↻ Run matching</button></div><div class="card"><div class="section-title"><h3>Recommended talent</h3><span>${ranked.length} employees analyzed</span></div><div class="table-wrap"><table><thead><tr><th>Employee</th><th>Current role</th><th>Match</th><th>Skills matched</th><th>Skill gaps</th><th>Action</th></tr></thead><tbody>${ranked.map(({emp,m})=>`<tr><td><b>${esc(emp.name)}</b><div class="small muted">${emp.id}</div></td><td>${esc(emp.role||emp.job_title)}</td><td><b style="color:var(--blue)">${m.score}%</b><div class="progress" style="width:90px"><span style="width:${m.score}%"></span></div></td><td>${m.hits.map(s=>`<span class="check">✓ ${esc(s)}</span>`).join("<br>")||"—"}</td><td>${m.missing.map(s=>`<span class="miss">⚠ ${esc(s)}</span>`).join("<br>")||'<span class="check">No critical gaps</span>'}</td><td><button class="secondary" onclick="shortlist('${emp.id}',${p.id})">Shortlist</button></td></tr>`).join("")}</tbody></table></div></div><p class="footer-note">Production scoring weights: Skill Overlap 50%, TF-IDF Vector Similarity 15%, Work Experience 15%, Interest Alignment 10%, Performance 10%.</p>`;
+  }else if(currentPage==="talent"){
+    let candidates = [];
+    if(useBackend && authToken){
+      try{
+        let res = await fetch(`${API_BASE}/employees/hidden-talent`, {headers:{"Authorization": `Bearer ${authToken}`}});
+        if(res.ok) candidates = await res.json();
+      }catch(e){}
+    }
+    if(!candidates.length){
+      candidates=employees.filter(emp=>(emp.hidden||emp.hidden_skills||[]).length||(emp.skills||[]).some(s=>!(emp.role||"").toLowerCase().includes(s.toLowerCase()))).map(emp=>({
+        employee: emp,
+        discoverable_skills: emp.hidden || emp.hidden_skills || emp.skills.slice(0,2),
+        potential_project_matches: projects.filter(p=>match(emp,p).score>=40).slice(0,2).map(p=>({project_title: p.title, match_score: match(emp,p).score}))
+      }));
+    }
+
+    html=pageHead("Hidden Talent Discovery","Explore capabilities employees may have beyond their current job title.")+`<div class="notice">SkillSync surfaces additional skills from each profile and connects them to relevant project opportunities.</div><div class="grid two-col-even">${candidates.map(c=>{
+      let emp = c.employee;
+      let disc = c.discoverable_skills || [];
+      let pMatches = c.potential_project_matches || [];
+      return `<div class="card"><div style="display:flex;gap:12px;align-items:center"><div class="avatar">${initials(emp.name)}</div><div><b>${esc(emp.name)}</b><div class="small muted">${esc(emp.job_title||emp.role)} · ${esc(emp.department||emp.dept)}</div></div></div><div class="small muted" style="margin:18px 0 8px">Additional / discoverable skills</div><div class="tag-row">${disc.map(s=>`<span class="tag" style="background:#e8faf3;color:#16764e">${esc(s)}</span>`).join("")}</div><div class="small muted" style="margin:16px 0 8px">Potential project matches</div><div>${pMatches.map(p=>`<div class="match-row"><div><b style="font-size:13px">${esc(p.project_title)}</b><div class="small muted">${p.match_score}% match score</div></div><span class="match-score">${p.match_score}%</span></div>`).join("")||'<span class="muted small">No close matches in sample data</span>'}</div></div>`
+    }).join("")}</div>`;
+  }else if(currentPage==="upskilling"){
+    let all = [];
+    if(useBackend && authToken){
+      try{
+        let res = await fetch(`${API_BASE}/employees/upskilling`, {headers:{"Authorization": `Bearer ${authToken}`}});
+        if(res.ok) all = await res.json();
+      }catch(e){}
+    }
+    if(!all.length){
+      all=employees.flatMap(emp=>projects.flatMap(p=>match(emp,p).missing.map(skill=>({
+        employee_id: emp.id,
+        employee_name: emp.name,
+        project_id: p.id,
+        project_title: p.title,
+        missing_skill: skill,
+        suggested_action: `${skill} fundamentals / guided practice`,
+        learning_status: (emp.learning||{})[emp.id+"|"+skill]||"Not Started"
+      }))));
+    }
+
+    html=pageHead("Skill Gaps & Upskilling","Identify missing skills and turn them into practical learning actions.")+`<div class="grid stats"><div class="card"><div class="stat-label">Skill-gap records</div><div class="stat-value">${all.length}</div><div class="stat-note">Across demo matches</div></div><div class="card"><div class="stat-label">Learning topics</div><div class="stat-value">${new Set(all.map(x=>x.missing_skill)).size}</div><div class="stat-note">Unique skills</div></div><div class="card"><div class="stat-label">Learning stages</div><div class="stat-value">3</div><div class="stat-note">Not started · In progress · Done</div></div><div class="card"><div class="stat-label">Recommended next step</div><div class="stat-value" style="font-size:20px">Learn → Apply</div><div class="stat-note">Build skills through projects</div></div></div><div class="card"><div class="section-title"><h3>Suggested upskilling</h3><span>Workforce matrix</span></div><div class="table-wrap"><table><thead><tr><th>Employee</th><th>Project</th><th>Missing skill</th><th>Suggested action</th><th>Learning status</th></tr></thead><tbody>${all.slice(0,30).map(x=>{
+      let status=x.learning_status||"Not Started";
+      return `<tr><td>${esc(x.employee_name)}</td><td>${esc(x.project_title)}</td><td><span class="miss">${esc(x.missing_skill)}</span></td><td>${esc(x.suggested_action)}</td><td><select onchange="setLearning('${x.employee_id}','${esc(x.missing_skill)}',this.value)"><option ${status==="Not Started"?"selected":""}>Not Started</option><option ${status==="In Progress"?"selected":""}>In Progress</option><option ${status==="Completed"?"selected":""}>Completed</option></select></td></tr>`
+    }).join("")}</tbody></table></div></div>`;
+  }else if(currentPage==="admin"){
+    html=pageHead("HR & Project Management","Create demo projects and review workforce capability.")+`<div class="grid two-col-even"><div class="card"><div class="section-title"><h3>Create a project</h3><span>${useBackend?'FastAPI API':'Demo data'}</span></div><form id="createProject" onsubmit="createProject(event)"><label>Project name</label><input id="newTitle" required placeholder="e.g. Predictive Maintenance AI"><label>Department</label><input id="newDept" required placeholder="e.g. Data & AI"><label>Description</label><textarea id="newDesc" required rows="3" placeholder="What will the team build?"></textarea><label>Required skills (comma-separated)</label><input id="newSkills" required placeholder="Python, SQL, Machine Learning"><label>Project lead</label><input id="newOwner" required value="${esc(currentUser?.name||"Sarah Johnson")}"><button style="margin-top:16px">＋ Create project</button></form></div><div class="card"><div class="section-title"><h3>Workforce snapshot</h3><span>${employees.length} employees</span></div><div class="stat-value">${new Set(employees.flatMap(e=>e.skills||[])).size}</div><div class="stat-label">Distinct skills across profiles</div><div style="margin-top:20px">${[...new Set(employees.flatMap(e=>e.skills||[]))].slice(0,10).map(s=>`<div class="match-row"><span>${esc(s)}</span><span class="match-score">${employees.filter(e=>(e.skills||[]).includes(s)).length} people</span></div>`).join("")}</div></div></div><div class="card" style="margin-top:18px"><div class="section-title"><h3>Manage projects</h3><span>${projects.length} total</span></div><div class="table-wrap"><table><thead><tr><th>Project</th><th>Department</th><th>Required skills</th><th>Lead</th><th>Action</th></tr></thead><tbody>${projects.map(p=>`<tr><td><b>${esc(p.title)}</b></td><td>${esc(p.dept||p.department)}</td><td>${(p.skills||p.required_skills||[]).map(esc).join(", ")}</td><td>${esc(p.owner)}</td><td><button class="danger" onclick="deleteProject(${p.id})">Delete</button></td></tr>`).join("")}</tbody></table></div></div><div style="margin-top:16px;display:flex;justify-content:flex-end"><button class="ghost" onclick="resetDemo()">Reset demo data</button></div>`;
+  }
+  $("content").innerHTML=html;
+}
+
+function go(page){currentPage=page;render();window.scrollTo(0,0)}
+
+async function applyProject(id){
+  let e=person();
+  if(useBackend && authToken){
+    try{
+      let res = await fetch(`${API_BASE}/applications`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json", "Authorization":`Bearer ${authToken}`},
+        body: JSON.stringify({project_id: id})
+      });
+      if(res.ok){
+        applications[id] = applications[id] || [];
+        applications[id].push(e.id);
+        toast("Interest submitted to FastAPI Backend!");
+        render();
+        return;
+      }
+    }catch(err){}
+  }
+  applications[id]=applications[id]||[];
+  if(!applications[id].includes(e.id)){
+    applications[id].push(e.id);
+    save();
+    render();
+    toast("Interest submitted for review.");
+  }
+}
+
+function viewProject(id){
+  selectedProject=id;
+  let p=projects.find(p=>p.id===id),m=match(person(),p);
+  alert(`${p.title}\n\nMatch score: ${m.score}%\nMatched skills: ${m.hits.join(", ")||"None"}\nSkill gaps: ${m.missing.join(", ")||"No critical gaps"}\nInterest alignment: ${m.interest?"Yes":"Not detected"}\n\n${useBackend?'Engineered by FastAPI AI Matcher':'Illustrative prototype match.'}`);
+}
+
+function filterProjects(){
+  let q=($("projectSearch")?.value||"").toLowerCase(),d=$("deptFilter")?.value||"";
+  let list=projects.filter(p=>(!d||(p.dept||p.department)===d)&&(p.title+" "+(p.desc||p.description)+" "+(p.skills||p.required_skills||[]).join(" ")).toLowerCase().includes(q));
+  $("projectResults").innerHTML=list.length?list.map(projectCard).join(""):'<div class="card empty">No projects match your search.</div>';
+}
+
+function shortlist(empId,pid){
+  let emp = employees.find(e=>e.id===empId) || {name: empId};
+  let proj = projects.find(p=>p.id===pid) || {title: "Project"};
+  toast(`${emp.name} shortlisted for ${proj.title}`);
+}
+
+async function setLearning(empId,skill,status){
+  if(useBackend && authToken){
+    try{
+      await fetch(`${API_BASE}/employees/upskilling`,{
+        method: "POST",
+        headers: {"Content-Type":"application/json", "Authorization": `Bearer ${authToken}`},
+        body: JSON.stringify({employee_id: empId, skill: skill, status: status})
+      });
+    }catch(e){}
+  }
+  let e=employees.find(x=>x.id===empId);
+  if(e){
+    e.learning = e.learning || {};
+    e.learning[e.id+"|"+skill]=status;
+    save();
+  }
+  toast("Learning status updated.");
+}
+
+async function createProject(ev){
+  ev.preventDefault();
+  let newSkills = $("newSkills").value.split(",").map(x=>x.trim()).filter(Boolean);
+  let payload = {
+    title: $("newTitle").value.trim(),
+    department: $("newDept").value.trim(),
+    description: $("newDesc").value.trim(),
+    required_skills: newSkills,
+    status: "Open",
+    owner: $("newOwner").value.trim()
+  };
+
+  if(useBackend && authToken){
+    try{
+      let res = await fetch(`${API_BASE}/projects`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json", "Authorization": `Bearer ${authToken}`},
+        body: JSON.stringify(payload)
+      });
+      if(res.ok){
+        await fetchProjectsBackend();
+        render();
+        toast("Project created in FastAPI database!");
+        return;
+      }
+    }catch(err){}
+  }
+
+  let p = {id: Date.now(), ...payload, skills: newSkills, desc: payload.description, dept: payload.department};
+  projects.unshift(p);
+  save();
+  render();
+  toast("Project created successfully.");
+}
+
+async function deleteProject(id){
+  if(!confirm("Delete this project?")) return;
+  if(useBackend && authToken){
+    try{
+      let res = await fetch(`${API_BASE}/projects/${id}`, {
+        method: "DELETE",
+        headers: {"Authorization": `Bearer ${authToken}`}
+      });
+      if(res.ok){
+        await fetchProjectsBackend();
+        render();
+        toast("Project deleted from FastAPI database!");
+        return;
+      }
+    }catch(err){}
+  }
+  projects=projects.filter(p=>p.id!==id);
+  save();
+  render();
+  toast("Project deleted.");
+}
+
+async function resetDemo(){
+  if(!confirm("Reset all demo data?")) return;
+  if(useBackend){
+    try{
+      await fetch(`${API_BASE}/auth/reset-demo`, {method:"POST"});
+      await fetchProjectsBackend();
+      toast("Backend database reset to defaults!");
+      render();
+      return;
+    }catch(e){}
+  }
+  projects=JSON.parse(JSON.stringify(initialProjects));
+  employees=JSON.parse(JSON.stringify(initialEmployees));
+  applications={};
+  save();
+  render();
+  toast("Demo data reset.");
+}
+
+$("togglePass").onclick=()=>{let i=$("password");i.type=i.type==="password"?"text":"password";$("togglePass").textContent=i.type==="password"?"Show":"Hide"};
+
+$("loginForm").onsubmit = async (ev) => {
+  ev.preventDefault();
+  let id = $("employeeId").value.trim().toUpperCase();
+  let pass = $("password").value;
+  let role = $("role").value;
+
+  if (useBackend) {
+    try {
+      let res = await fetch(`${API_BASE}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ employee_id: id, password: pass, role: role })
+      });
+      if (res.ok) {
+        let data = await res.json();
+        authToken = data.access_token;
+        localStorage.setItem("ss_token", authToken);
+        currentUser = data.user;
+        await fetchProjectsBackend();
+        $("login").style.display = "none";
+        $("app").style.display = "block";
+        $("sideName").textContent = currentUser.name;
+        $("sideRole").textContent = role;
+        $("avatar").textContent = initials(currentUser.name);
+        $("topAvatar").textContent = initials(currentUser.name);
+        $("roleTag").textContent = role;
+        currentPage = "dashboard";
+        render();
+        toast(`Welcome, ${currentUser.name}!`);
+        return;
+      } else {
+        let errData = await res.json();
+        $("loginError").textContent = errData.detail || "Authentication failed.";
+        return;
+      }
+    } catch (err) {
+      console.warn("Backend auth failed, falling back to local mode", err);
+    }
+  }
+
+  // Fallback local login
+  if (pass !== "demo123") {
+    $("loginError").textContent = "Demo password is demo123.";
+    return;
+  }
+  let e = employees.find(x => x.id === id) || employees[0];
+  currentUser = { id: e.id, name: e.name, role: role, job_title: e.role, department: e.dept, skills: e.skills, interests: e.interests, hidden_skills: e.hidden };
+  $("login").style.display = "none";
+  $("app").style.display = "block";
+  $("sideName").textContent = e.name;
+  $("sideRole").textContent = role;
+  $("avatar").textContent = initials(e.name);
+  $("topAvatar").textContent = initials(e.name);
+  $("roleTag").textContent = role;
+  currentPage = "dashboard";
+  render();
+};
+
+document.querySelectorAll(".nav").forEach(b=>b.addEventListener("click",()=>go(b.dataset.page)));
+$("logout").onclick=()=>{
+  $("app").style.display="none";
+  $("login").style.display="grid";
+  $("password").value="";
+  $("loginError").textContent="";
+  currentUser=null;
+  authToken=null;
+  localStorage.removeItem("ss_token");
+};
+
+// Check backend availability on load
+checkBackend().then(()=>{
+  if(useBackend){
+    fetchProjectsBackend();
+  }
+});
+</script>
+</body>
+</html>
