@@ -41,7 +41,8 @@ app.include_router(applications.router, prefix=settings.API_V1_STR)
 
 # Mount React frontend static assets if built
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-REACT_DIST_DIR = os.path.join(BASE_DIR, "frontend", "dist")
+PROJECT_ROOT = os.path.dirname(BASE_DIR)
+REACT_DIST_DIR = os.path.join(PROJECT_ROOT, "frontend", "dist")
 REACT_ASSETS_DIR = os.path.join(REACT_DIST_DIR, "assets")
 
 if os.path.exists(REACT_ASSETS_DIR):
@@ -68,7 +69,7 @@ def serve_frontend(full_path: str):
     if os.path.exists(react_index):
         return FileResponse(react_index, media_type="text/html")
 
-    root_index = os.path.join(BASE_DIR, "index.html")
+    root_index = os.path.join(PROJECT_ROOT, "index.html")
     if os.path.exists(root_index):
         return FileResponse(root_index, media_type="text/html")
 

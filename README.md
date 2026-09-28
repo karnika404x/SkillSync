@@ -1,139 +1,284 @@
-# SkillSync — AI Talent & Project Marketplace (FastAPI Backend & Frontend)
+# SkillSync
 
-SkillSync is an AI-powered internal talent and project marketplace that connects employee skills, interests, and experience with project opportunities across enterprise teams.
+SkillSync is a web application for finding employees who are a good fit
+for internal projects.
 
----
+The main idea is simple: instead of looking only at someone's current
+job role, the system looks at their skills, experience, interests and
+some performance information to find possible project matches. It also
+has sections for hidden skills and upskilling.
 
-## 🚀 Quick Start
+## What the project does
 
-### 1. Requirements
-- **Python 3.10+** (Python 3.14 compatible)
+-   Employee dashboard
+-   Internal project marketplace
+-   AI-based skill matching
+-   Hidden talent discovery
+-   Skill gap and upskilling section
+-   Application management
+-   Admin/project management
 
-### 2. Setup & Virtual Environment
-```bash
-# Create virtual environment
-python -m venv .venv
+For example, if a project needs Python, SQL and Machine Learning,
+SkillSync compares those requirements with employee profiles and shows
+possible matches.
 
-# Activate virtual environment
-# Windows (PowerShell):
-.\.venv\Scripts\Activate.ps1
-# Linux / macOS:
-source .venv/bin/activate
+## Tech used
 
-# Install dependencies
+### Frontend
+
+-   React
+-   Vite
+-   JavaScript / JSX
+-   CSS
+
+### Backend
+
+-   Python
+-   FastAPI
+-   Uvicorn
+-   SQLAlchemy
+-   Pydantic
+-   JWT authentication
+-   Passlib / bcrypt
+
+### Matching
+
+-   scikit-learn
+-   NumPy
+-   TF-IDF
+-   Cosine similarity
+
+### Database
+
+-   SQLite
+
+### Testing
+
+-   Pytest
+-   HTTPX
+
+## How it works
+
+The frontend is built with React and handles the pages and user
+interaction.
+
+The backend is built with FastAPI. React sends requests to the backend,
+and the backend handles users, projects, applications and matching.
+
+``` text
+React frontend
+      |
+      | API request
+      v
+FastAPI backend
+      |
+      +---- SQLite database
+      |
+      +---- Matching engine
+                |
+                +---- Skill overlap
+                +---- TF-IDF similarity
+                +---- Experience
+                +---- Interests
+                +---- Performance
+```
+
+## Matching logic
+
+The matching system combines machine learning with simple scoring rules.
+
+The current score is based on:
+
+-   50% skill overlap
+-   15% text similarity
+-   15% experience
+-   10% interest alignment
+-   10% performance
+
+For text similarity, employee information and project information are
+converted into TF-IDF vectors. Cosine similarity is then used to compare
+them.
+
+The other parts of the score come from employee and project data.
+
+## Hidden talent
+
+SkillSync also looks for skills that may not be obvious from an
+employee's current role.
+
+For example, someone listed as a frontend developer may also have Python
+or NLP skills. If a suitable project needs those skills, the employee
+can be shown as a possible match.
+
+## Upskilling
+
+The upskilling section looks at the difference between the skills needed
+by a project and the skills an employee already has.
+
+Example:
+
+``` text
+Project needs:
+Python
+SQL
+AWS
+Docker
+
+Employee has:
+Python
+SQL
+
+Missing:
+AWS
+Docker
+```
+
+The missing skills can then be used to suggest areas for learning.
+
+## Project structure
+
+``` text
+backend/
+├── app/
+│   ├── main.py
+│   ├── config.py
+│   ├── database.py
+│   ├── models.py
+│   ├── schemas.py
+│   ├── auth.py
+│   ├── ai_matcher.py
+│   └── routers/
+│       ├── matching.py
+│       ├── employees.py
+│       ├── projects.py
+│       └── applications.py
+├── tests/
+│   ├── test_auth.py
+│   ├── test_employees.py
+│   ├── test_matching.py
+│   └── test_projects.py
+├── requirements.txt
+└── run_backend.py
+
+frontend/
+└── src/
+    ├── App.jsx
+    ├── main.jsx
+    ├── services/
+    │   └── api.js
+    ├── components/
+    │   └── Charts.jsx
+    └── pages/
+        ├── LoginPage.jsx
+        ├── DashboardPage.jsx
+        ├── MarketplacePage.jsx
+        ├── MatchingPage.jsx
+        ├── HiddenTalentPage.jsx
+        ├── UpskillingPage.jsx
+        └── AdminPage.jsx
+```
+
+## Running the backend
+
+Go to the backend folder:
+
+``` bash
+cd backend
+```
+
+Install the Python dependencies:
+
+``` bash
 pip install -r requirements.txt
 ```
 
-### 3. Run Backend Server
-```bash
+Start the backend:
+
+``` bash
 python run_backend.py
 ```
-*Or using uvicorn directly:*
-```bash
-uvicorn app.main:app --reload --port 8000
+
+## Running the frontend
+
+Go to the frontend folder:
+
+``` bash
+cd frontend
 ```
 
-Once running:
-- **Web App Interface**: [http://localhost:8000/](http://localhost:8000/)
-- **Interactive OpenAPI (Swagger UI)**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **ReDoc Documentation**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
+Install packages:
 
-### 4. Run Automated Test Suite
-```bash
+``` bash
+npm install
+```
+
+Start the development server:
+
+``` bash
+npm run dev
+```
+
+Open the address shown by Vite.
+
+## API documentation
+
+FastAPI provides API documentation automatically while the backend is
+running.
+
+Open:
+
+``` text
+/docs
+```
+
+## Authentication
+
+The application uses JWT tokens for authentication.
+
+After login, the backend returns a token and the frontend uses it for
+protected API requests.
+
+Different roles have different permissions, including employee, project
+manager and admin.
+
+## Testing
+
+Backend tests are written using Pytest.
+
+Run:
+
+``` bash
 pytest
 ```
 
----
+The tests cover areas such as authentication, employees, projects and
+matching.
 
-## 🔐 Demo Login Credentials
+## Note about the dashboard
 
-| Employee ID | Password | Role Options |
-| :--- | :--- | :--- |
-| `EMP-1001` | `demo123` | Employee |
-| `EMP-1002` | `demo123` | Project Manager |
-| `EMP-1003` | `demo123` | HR/Admin |
+Some dashboard numbers in the current prototype are sample/demo values
+used for the interface. Other values, such as project distribution and
+matching results, are calculated from application data.
 
----
+The matching page is the main place where the matching logic is used.
 
-## 🏗 Backend Architecture
+## Why we built it
 
-```
-SkillSync_Prototype/
-├── app/
-│   ├── __init__.py
-│   ├── main.py                # FastAPI app instance, CORS middleware, static router
-│   ├── config.py              # Application settings (Pydantic Settings v2)
-│   ├── database.py            # SQLAlchemy database engine, session local & auto-seeder
-│   ├── models.py              # SQLAlchemy ORM models (User, Project, Application, LearningProgress)
-│   ├── schemas.py             # Pydantic serialization models & schemas
-│   ├── auth.py                # JWT token handling, bcrypt hashing & RBAC dependencies
-│   ├── ai_matcher.py          # AI Skill Matching Engine (TF-IDF vector similarity + multi-factor scoring)
-│   └── routers/
-│       ├── auth.py            # Auth routes (/api/auth/login, /me, /reset-demo)
-│       ├── employees.py       # Workforce, hidden talent & upskilling endpoints
-│       ├── projects.py        # Project marketplace CRUD
-│       ├── matching.py        # AI shortlist generation & match explanation
-│       └── applications.py    # Express interest & application tracking
-├── tests/
-│   ├── conftest.py            # Pytest test fixtures & in-memory/isolated SQLite setup
-│   ├── test_auth.py           # Unit tests for authentication & JWT
-│   ├── test_employees.py      # Unit tests for employee & upskilling routes
-│   ├── test_matching.py       # Unit tests for AI Skill Matcher & shortlist calculation
-│   └── test_projects.py       # Unit tests for project marketplace CRUD & permissions
-├── index.html                 # Interactive Web UI with backend REST API integration & fallback
-├── requirements.txt           # Python dependency requirements
-├── run_backend.py             # Python launcher script
-└── README.md                  # Complete documentation
-```
+Companies often have people with useful skills that are not visible
+outside their current role.
 
----
+SkillSync is built around a simple idea:
 
-## 📡 API Endpoint Overview
+> Find the right people inside the organization before looking outside.
 
-### 🔑 Authentication (`/api/auth`)
-- `POST /api/auth/login`: Authenticate with `employee_id`, `password`, and optional `role`. Returns JWT token.
-- `GET /api/auth/me`: Get profile details of currently authenticated user.
-- `POST /api/auth/reset-demo`: Reset SQLite database tables to initial demo seed data.
+It can help with internal mobility, project staffing and identifying
+areas where employees can grow.
 
-### 💼 Project Marketplace (`/api/projects`)
-- `GET /api/projects`: List project opportunities (supports `search`, `department`, `status_filter`).
-- `POST /api/projects`: Create a new project (Requires `Project Manager` or `HR/Admin` role).
-- `GET /api/projects/{id}`: Retrieve project by ID.
-- `PUT /api/projects/{id}`: Update project details.
-- `DELETE /api/projects/{id}`: Delete a project (Requires `Project Manager` or `HR/Admin` role).
+## Future improvements
 
-### 🤖 AI Skill Matching Engine (`/api/matching`)
-- `POST /api/matching/shortlist`: Run AI matching engine for a project ID, returning a ranked shortlist of candidates with explainable score breakdowns.
-- `GET /api/matching/explain`: Returns granular breakdown (exact skill overlap, TF-IDF vector text similarity, experience score, interest alignment score, performance score).
-
-### 👥 Employees & Talent Discovery (`/api/employees`)
-- `GET /api/employees`: List workforce employee profiles.
-- `GET /api/employees/hidden-talent`: Discover employees with hidden or secondary skills beyond job titles.
-- `GET /api/employees/upskilling`: View skill gap matrix across projects with actionable learning tasks.
-- `POST /api/employees/upskilling`: Update learning progress status (`Not Started`, `In Progress`, `Completed`).
-
-### 📩 Project Applications (`/api/applications`)
-- `POST /api/applications`: Express interest in a project.
-- `GET /api/applications`: Get application history for current user or project.
-
----
-
-## 📊 AI Matching Formula Weights
-
-```
-Overall Score (0–100%) = 
-    Skill Overlap Score       (50%)  +
-    TF-IDF Vector Similarity   (15%)  +
-    Experience Ratio          (15%)  +
-    Interest Alignment        (10%)  +
-    Performance & Knowledge   (10%)
-```
-
----
-
-## 🛢 Customizing Database & AI Providers
-
-The backend configuration is handled via environment variables in `app/config.py`:
-
-- **Database**: Defaults to SQLite (`sqlite:///./skillsync.db`). Set `DATABASE_URL=postgresql://user:pass@localhost:5432/skillsync` for production PostgreSQL.
-- **AI Provider**: Defaults to `hybrid` (TF-IDF + rule-based scoring). Can be configured for LLM integration via `GEMINI_API_KEY` or `OPENAI_API_KEY`.
+-   Better semantic matching using embeddings
+-   More detailed learning recommendations
+-   More project and employee analytics
+-   Better explanation of individual match scores
+-   Integration with real HR systems
+-   More advanced skill-gap tracking
